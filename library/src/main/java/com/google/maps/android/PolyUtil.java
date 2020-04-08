@@ -433,14 +433,11 @@ public class PolyUtil {
         ArrayList<LatLng> simplifiedLine = new ArrayList<>();
         ArrayList<Integer> timestamps = new ArrayList<>();
         for (LatLng l : poly) {
-            if (dists[idx] != 0) {
+            if (dists[idx] != 0 || idx <= buffer) {
                 simplifiedLine.add(l);
                 timestamps.add(times.get(idx));
             }
             idx++;
-            if (idx == poly.size() - (buffer+1)) {
-                break;
-            }
         }
         Pair<List<LatLng>, List<Integer>> pair = new Pair<>(simplifiedLine, timestamps);
 
