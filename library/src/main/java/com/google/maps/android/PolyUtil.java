@@ -366,7 +366,7 @@ public class PolyUtil {
      *                  simplified poly.
      * @return a simplified poly produced by the Douglas-Peucker algorithm
      */
-    public static Pair<List<LatLng>, List<Integer>> simplify(List<LatLng> poly, double tolerance, int buffer) {
+    public static Pair<List<LatLng>, List<Integer>> simplify(List<LatLng> poly, List<Integer> times, double tolerance, int buffer) {
         final int n = poly.size();
         if (n < 1) {
             throw new IllegalArgumentException("Polyline must have at least 1 point");
@@ -431,19 +431,18 @@ public class PolyUtil {
         // Generate the simplified line
         idx = 0;
         ArrayList<LatLng> simplifiedLine = new ArrayList<>();
-        ArrayList<Integer> deletedIndexes = new ArrayList<>();
+        ArrayList<Integer> timestamps = new ArrayList<>();
         for (LatLng l : poly) {
             if (dists[idx] != 0) {
                 simplifiedLine.add(l);
-            } else {
-                deletedIndexes.add(idx);
+                timestamps.add(times.get(idx));
             }
             idx++;
             if (idx == poly.size() - (buffer+1)) {
                 break;
             }
         }
-        Pair<List<LatLng>, List<Integer>> pair = new Pair<>(simplifiedLine, deletedIndexes);
+        Pair<List<LatLng>, List<Integer>> pair = new Pair<>(simplifiedLine, timestamps);
 
         return pair;
     }
